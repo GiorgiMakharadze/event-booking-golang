@@ -10,7 +10,7 @@ var DB *sql.DB
 
 func InitDB() {
 	var err error
-	DB, err = sql.Open("sqlite3", "api.db") 
+	DB, err = sql.Open("sqlite3", "api.db")
 
 	if err != nil {
 		panic("could not connect to the database")
