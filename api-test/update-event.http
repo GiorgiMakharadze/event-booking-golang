@@ -1,10 +1,8 @@
-POST localhost:8080/events
-content-type: application/json
+PUT localhost:8080/event/1
 
 {
     "name": "Test event",
     "description": "A test event",
     "location": "A test location",
-     "dateTime": "2025-01-01T15"
+    "dateTime": "2025-01-01T15"
 }
-
