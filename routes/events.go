@@ -85,7 +85,7 @@ func updateEvent(ctx *gin.Context) {
 
 }
 
-func deleteEvent (ctx *gin.Context) {
+func deleteEvent(ctx *gin.Context) {
 	eventId, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "could not pasrse event id"})

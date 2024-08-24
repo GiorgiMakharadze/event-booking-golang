@@ -1,4 +1,4 @@
-PUT localhost:8080/event/1
+PUT http://localhost:8080/event/1
 
 {
     "name": "Test event",
