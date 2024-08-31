@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/GiorgiMakharadze/event-booking-golang/models"
+	"github.com/GiorgiMakharadze/event-booking-golang/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -37,5 +38,11 @@ func login(ctx *gin.Context) {
 		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "could not authenticate user"})
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"message": "login successful!"})
+	token, err := utils.GenerateToken(user.Email, user.ID)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "could not authenticate user"})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"message": "login successful!", "token": token})
 }
