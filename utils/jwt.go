@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"errors"
 	"os"
 	"time"
 
@@ -35,4 +36,29 @@ func GenerateToken(email string, userId int64) (string, error) {
 	}
 
 	return tokenString, nil
+}
+
+func VerifyToken(token string) error {
+	parsedToken, err := jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
+		_, ok := token.Method.(*jwt.SigningMethodHMAC)
+		if !ok {
+			return nil, errors.New("unexpected signing method")
+		}
+		secretKey := os.Getenv("SECRET_KEY")
+		if secretKey == "" {
+			log.Fatalf("SECRET_KEY environment variable is not set")
+		}
+		return secretKey, nil
+	})
+
+	if err != nil {
+		return errors.New("Could not parse token")
+	}
+
+	tokenIsValid := parsedToken.Valid
+	if !tokenIsValid {
+		return errors.New("Invalid Token")
+	}
+
+	return nil
 }
