@@ -23,5 +23,5 @@ func Authenticate(ctx *gin.Context) {
 
 	ctx.Set("userId", userId)
 
-	ctx.Next( )
+	ctx.Next()
 }
