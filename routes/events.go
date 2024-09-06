@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/GiorgiMakharadze/event-booking-golang/middlewares"
 	"github.com/GiorgiMakharadze/event-booking-golang/models"
 	"github.com/gin-gonic/gin"
 )
@@ -34,13 +35,8 @@ func getEvent(ctx *gin.Context) {
 }
 
 func createEvent(ctx *gin.Context) {
-	token := ctx.Request.Header.Get("Authorization")
-
-	if token == "" {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "not authorized"})
-		return
-	}
-
+	middlewares.Authenticate(ctx)
+	
 	var event models.Event
 	err := ctx.ShouldBindJSON(&event)
 
@@ -49,8 +45,8 @@ func createEvent(ctx *gin.Context) {
 		return
 	}
 
-	event.ID = 1
-	event.UserID = 1
+	userId := ctx.GetInt64("userId")
+	event.UserID = userId
 
 	err = event.Save()
 	if err != nil {
